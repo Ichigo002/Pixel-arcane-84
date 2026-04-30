@@ -20,7 +20,7 @@ public:
     /// @param character give specified character to render
     void renderASCII(char character);
 
-    void renderAnimatedText(char *text, int text_length, int animation_speed_ms = 200, bool loop_animation = false);
+    void renderAnimatedText(char *text, int text_length, int animation_speed_ms = 180, bool loop_animation = false);
 
     void changeAnimationSpeed(int animation_speed_ms);
 
