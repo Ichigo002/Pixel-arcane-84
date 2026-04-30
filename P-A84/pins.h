@@ -1,17 +1,17 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-extern const int rowDataPin;
-extern const int rowClockPin;
-extern const int rowLatchPin;
+extern const short int rowDataPin;
+extern const short int rowClockPin;
+extern const short int rowLatchPin;
 
-extern const int colDataPin;
-extern const int colClockPin;
-extern const int colLatchPin;
+extern const short int colDataPin;
+extern const short int colClockPin;
+extern const short int colLatchPin;
 
-extern const int btnLeftPin;
-extern const int btnOkPin;
-extern const int btnCancelPin;
-extern const int btnRightPin;
+extern const short int btnLeftPin;
+extern const short int btnOkPin;
+extern const short int btnCancelPin;
+extern const short int btnRightPin;
 
 #endif
