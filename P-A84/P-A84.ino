@@ -27,19 +27,20 @@ void setupPins()
 void setup() 
 {
     setupPins();
-
+    renderer.renderAnimatedText("XD", 2, 100, true);
+    //renderer.renderASCII(' ');
 }
 
 void loop() 
 {
-    if(timer_change_char.hasExpired(1000))
-    {
-        if(i>44)
-            i = 0;
-        Glyph g = _readASCII(i);
-        renderer.renderGlyph(g);
-        i++;
-        timer_change_char.resetHasExpired();
-    }
+    // if(timer_change_char.hasExpired(1000))
+    // {
+    //     if(i>44)
+    //         i = 0;
+    //     Glyph g = _readASCII(i);
+    //     renderer.renderGlyph(g);
+    //     i++;
+    //     timer_change_char.resetHasExpired();
+    // }
     renderer.update();
 }

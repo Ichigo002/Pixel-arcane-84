@@ -16,29 +16,35 @@ public:
     /// @param glyph table of 8 uint8_t values, each for one row. SIZE: 8 values
     void renderGlyph(Glyph &glyph);
 
-    /// @brief 
+    /// @brief
     /// @param character give specified character to render
     void renderASCII(char character);
 
-    void renderAnimatedText(char* text, int text_length, int animation_speed_ms = 140, bool loop_animation = false);
+    void renderAnimatedText(char *text, int text_length, int animation_speed_ms = 200, bool loop_animation = false);
+
+    void changeAnimationSpeed(int animation_speed_ms);
+
+    void breakLoopAnimation();
 
     void update();
-private:
 
+private:
     Glyph glyph_to_render;
-    // If TRUE: render glyph, IF FALSE: render aniamtion
-    bool render_glyph;
+
     bool render_animation;
 
-    //Animation vars
-    char* animated_text;
-    Glyph anim_glyph_1;
-    Glyph anim_glyph_2;
+    // Animation vars
+    char *animated_text;
+    Glyph anim_glyph;
+    int animation_speed_ms;
     int length;
-    int iterator;
+    int current_char;
+    int bit_shifter;
+    TimerKernel timer_animation_delay;
+    bool final_character;
+    bool loop_animation;
 
+    Glyph getCharToAnimation(int char_no, bool force_space = false);
 };
-
-
 
 #endif
