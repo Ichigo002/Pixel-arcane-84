@@ -26,6 +26,8 @@ public:
 
     void breakLoopAnimation();
 
+    bool isAnimationDone();
+
     void update();
 
 private:

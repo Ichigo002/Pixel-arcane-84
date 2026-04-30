@@ -53,6 +53,11 @@ void TextRenderer::breakLoopAnimation()
     loop_animation = false;
 }
 
+bool TextRenderer::isAnimationDone()
+{
+    return !render_animation;
+}
+
 void TextRenderer::update()
 {
     if (render_animation && timer_animation_delay.hasExpired(animation_speed_ms))
