@@ -1,5 +1,12 @@
 #include <Arduino.h>
 #include "pins.h"
+#include "TextRenderer.h"
+#include <avr/pgmspace.h>
+#include <TimerKernel.h>
+
+TextRenderer renderer;
+TimerKernel timer_change_char;
+int i = 0;
 
 void setupPins()
 {
@@ -11,10 +18,10 @@ void setupPins()
     pinMode(colClockPin, OUTPUT);
     pinMode(colLatchPin, OUTPUT);
 
-    pinMode(btnLeftPin, INPUT_PULLUP);
-    pinMode(btnOkPin, INPUT_PULLUP);
-    pinMode(btnCancelPin, INPUT_PULLUP);
-    pinMode(btnRightPin, INPUT_PULLUP);
+    pinMode(btnLeftPin, INPUT);
+    pinMode(btnOkPin, INPUT);
+    pinMode(btnCancelPin, INPUT);
+    pinMode(btnRightPin, INPUT);
 }
 
 void setup() 
@@ -25,16 +32,14 @@ void setup()
 
 void loop() 
 {
-    delay(100);
-    digitalWrite(colLatchPin, LOW);
-    digitalWrite(rowLatchPin, LOW);
-    delay(100);
-    shiftOut(colDataPin, colClockPin, MSBFIRST, 0x01111110);
-    delay(100);
-    shiftOut(rowDataPin, rowClockPin, MSBFIRST, 0x01111110);
-
-    delay(100);
-    digitalWrite(colLatchPin, HIGH);
-    digitalWrite(rowLatchPin, HIGH);
-    delay(1000);
+    if(timer_change_char.hasExpired(1000))
+    {
+        if(i>44)
+            i = 0;
+        Glyph g = _readASCII(i);
+        renderer.renderGlyph(g);
+        i++;
+        timer_change_char.resetHasExpired();
+    }
+    renderer.update();
 }
