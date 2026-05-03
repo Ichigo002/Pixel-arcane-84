@@ -27,6 +27,9 @@ int getAsciiTablePosition(char &c)
         return 43;
     case 46: // .
         return 44;
+    case 45:
+        return 45;
+        // ADD HERE NEW TRANSLATION TO SEE CARACTER ON SCREEN
 
     default:
         return 0;
@@ -36,8 +39,8 @@ int getAsciiTablePosition(char &c)
 Glyph _readASCII(short int ascii_number)
 {
     Glyph m;
-
-    if (ascii_number > 44 && ascii_number < 0)
+                    // UPDATE HERE SIZE OF TABLE IF YOU ADD NEW CHARACTER!
+    if (ascii_number > 45 && ascii_number < 0)
         return _readASCII(NOT_FOUND_CHAR);
 
     for (byte i = 0; i < 8; i++)

@@ -15,12 +15,12 @@ public:
 // 1 Not Found character
 // 26 letters A B C D E F G H I J K L M N O P R S T Q U W X Y Z
 // 10 nubmers 0 1 2 3 4 5 6 7 8 9
-// 7 specials [SPACE] ! ? :) :( # , .
-// total: 45
+// 7 specials [SPACE] ! ? :) :( # , . -
+// total: 46
 
 int getAsciiTablePosition(char &c);
 
-const uint8_t ascii_table[45][8] PROGMEM = {
+const uint8_t ascii_table[46][8] PROGMEM = {
 
     // ERROR 0
     {
@@ -515,6 +515,17 @@ const uint8_t ascii_table[45][8] PROGMEM = {
         0b00000000,
         0b01100000,
         0b01100000,
+        0b00000000},
+
+        // - 45
+    {
+        0b00000000,
+        0b00000000,
+        0b00000000,
+        0b01111000,
+        0b01111000,
+        0b00000000,
+        0b00000000,
         0b00000000},
 
 };
