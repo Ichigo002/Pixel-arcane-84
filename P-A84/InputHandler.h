@@ -18,6 +18,8 @@ public:
     bool isButtonPressed(uint8_t btn_pin);
 
     bool isExitButtonPressed();
+
+    bool isButtonPressedFor2Sec(uint8_t btn_pin);
 private:
     TimerKernel exit_btn_timer;
     bool exit_btn_pressed;

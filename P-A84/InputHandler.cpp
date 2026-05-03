@@ -16,18 +16,25 @@ bool InputHandler::isButtonPressed(uint8_t btn_pin)
 
 bool InputHandler::isExitButtonPressed()
 {
-    if (isButtonPressed(BTN_DOWN))
+    return isButtonPressedFor2Sec(BTN_DOWN);
+}
+
+bool InputHandler::isButtonPressedFor2Sec(uint8_t btn_pin)
+{
+    if(isButtonPressed(btn_pin) && !exit_btn_pressed)
     {
         exit_btn_pressed = true;
         exit_btn_timer.resetHasExpired();
     }
 
-    if (!exit_btn_pressed)
-        return false;
+    if(exit_btn_timer.hasExpired(2000) && exit_btn_pressed)
+    {
+        return true;
+    }
 
-    if (!exit_btn_timer.hasExpired(3000))
-        return false;
-
-    exit_btn_pressed = false;
-    return true;
+    if(!isButtonPressed(btn_pin))
+    {
+        exit_btn_pressed = false;
+    } 
+    return false;
 }
