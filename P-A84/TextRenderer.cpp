@@ -3,11 +3,22 @@
 TextRenderer::TextRenderer(/* args */)
 {
     render_animation = false;
-    brightness = 1000;
+    brightness = 500;
 }
 
 TextRenderer::~TextRenderer()
 {
+}
+
+void TextRenderer::begin()
+{
+    pinMode(rowDataPin, OUTPUT);
+    pinMode(rowClockPin, OUTPUT);
+    pinMode(rowLatchPin, OUTPUT);
+
+    pinMode(colDataPin, OUTPUT);
+    pinMode(colClockPin, OUTPUT);
+    pinMode(colLatchPin, OUTPUT);
 }
 
 void TextRenderer::renderGlyph(Glyph &glyph)
@@ -34,6 +45,7 @@ void TextRenderer::renderAnimatedText(char *text, int text_length, bool loop_ani
 
     anim_glyph = getCharToAnimation(current_char);
 
+    
     glyph_to_render = Glyph();
     for (byte i = 0; i < 8; i++)
     {
@@ -82,7 +94,7 @@ void TextRenderer::decreaseBrightness()
 
 void TextRenderer::update()
 {
-    if (render_animation && timer_animation_delay.hasExpired(animation_speed_ms))
+    if (render_animation && (millis() - animation_timestamp >= animation_speed_ms))
     {
         for (byte i = 0; i < 8; i++)
         {
@@ -112,7 +124,7 @@ void TextRenderer::update()
             bit_shifter = 8;
         }
 
-        timer_animation_delay.resetHasExpired();
+        animation_timestamp = millis();
     }
 
     for (byte i = 0; i < 8; i++)

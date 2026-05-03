@@ -4,7 +4,6 @@
 #include "ASCII.h"
 #include "pins.h"
 #include <Arduino.h>
-#include <TimerKernel.h>
 
 #define BRIGHTNBESS_DROP_VAL 220
 
@@ -13,6 +12,8 @@ class TextRenderer
 public:
     TextRenderer();
     ~TextRenderer();
+
+    void begin();
 
     /// @brief renders glyph 8x8 on display
     /// @param glyph table of 8 uint8_t values, each for one row. SIZE: 8 values
@@ -52,7 +53,7 @@ private:
     int length;
     int current_char;
     int bit_shifter;
-    TimerKernel timer_animation_delay;
+    uint32_t animation_timestamp;
     bool final_character;
     bool loop_animation;
 
