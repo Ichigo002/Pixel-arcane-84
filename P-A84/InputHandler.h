@@ -2,30 +2,31 @@
 #define INPUT_HANDLER_H
 
 #include "pins.h"
-#include <TimerKernel.h>
-
-#define BTN_UP btnRightPin
-#define BTN_DOWN btnDownPin
-#define BTN_RIGHT btnUpPin
-#define BTN_LEFT btnLeftPin
+#include <Arduino.h>
 
 class InputHandler
 {
 public:
-    InputHandler();
-    ~InputHandler();
+    void begin();
+    void update();
 
-    bool isButtonPressed(uint8_t btn_pin);
+    // klik (zbocze)
+    bool up();
+    bool down();
+    bool left();
+    bool right();
 
-    bool isButtonPressedFor2Sec(uint8_t btn_pin);
+    // przytrzymanie ~2s
+    bool upLong();
+    bool downLong();
+    bool leftLong();
+    bool rightLong();
+
 private:
-    TimerKernel exit_btn_timer;
-    TimerKernel cooldown_timer;
-    bool last_button_state;
-    bool exit_btn_pressed;
+    uint8_t state = 0;
+    uint8_t last = 0;
+    uint8_t debounce = 0;
+    uint8_t hold[4] = {0};
 };
-
-
-
 
 #endif
