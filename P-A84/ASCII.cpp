@@ -1,6 +1,6 @@
 #include "ASCII.h"
 
-const char asciiLUT[46] = {
+const char asciiLUT[47] = {
     0,    // 0 (unused)
 
     // A-Z -> 1–26
@@ -20,7 +20,8 @@ const char asciiLUT[46] = {
     '#', // 42
     ',', // 43
     '.', // 44
-    '-'  // 45
+    '-', // 45
+    '+'  // 46
 };
 
 char getCharFromMyAsciiTable(int i)
@@ -59,6 +60,8 @@ int getAsciiTablePosition(char &c)
         return 44;
     case 45:
         return 45;
+    case 43:
+        return 46;
         // ADD HERE NEW TRANSLATION TO SEE CARACTER ON SCREEN
 
     default:
