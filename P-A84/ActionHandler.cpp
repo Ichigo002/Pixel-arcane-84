@@ -14,15 +14,15 @@ ActionHandler::~ActionHandler()
 
 void ActionHandler::runBrowseChars()
 {
-    if (input->isButtonPressed(BTN_LEFT))
+    if (input->left())
     {
         current_browse_chars_ascii--;
         refresh_render_cooldown = false;
 
         if (current_browse_chars_ascii < 1)
-            current_browse_chars_ascii = ascii_size_table-1;
+            current_browse_chars_ascii = ascii_size_table - 1;
     }
-    if (input->isButtonPressed(BTN_RIGHT))
+    if (input->right())
     {
         current_browse_chars_ascii++;
         refresh_render_cooldown = false;
@@ -41,20 +41,19 @@ void ActionHandler::runBrowseChars()
 
 void ActionHandler::runExampleAnimation()
 {
-    if (input->isButtonPressed(BTN_LEFT))
-    {
+    if (input->left())
         render->changeAnimationSpeed(render->getAnimationSpeed() + 15);
-    }
-    if (input->isButtonPressed(BTN_RIGHT))
+
+    if (input->right())
     {
         render->changeAnimationSpeed(render->getAnimationSpeed() - 15);
     }
 
-    if (input->isButtonPressed(BTN_UP))
+    if (input->up())
     {
         render->increaseBrightness();
     }
-    if (input->isButtonPressed(BTN_DOWN))
+    if (input->down())
     {
         render->decreaseBrightness();
     }
@@ -68,11 +67,72 @@ void ActionHandler::runExampleAnimation()
 
 void ActionHandler::runCustomAnimation()
 {
-    render->renderASCII('C');
+    if (input->left())
+    {
+        current_browse_chars_ascii--;
+        refresh_render_cooldown = false;
+
+        if (current_browse_chars_ascii < 1)
+            current_browse_chars_ascii = ascii_size_table - 1;
+    }
+    if (input->right())
+    {
+        current_browse_chars_ascii++;
+        refresh_render_cooldown = false;
+
+        if (current_browse_chars_ascii >= ascii_size_table)
+            current_browse_chars_ascii = 1;
+    }
+
+    if (input->upLong())
+    {
+        render->renderAnimatedText("ADD", 3, false, 40);
+        char x = getCharFromMyAsciiTable(current_browse_chars_ascii);
+        AddNewElementTxtAniamtion(x);
+    }
+
+    if (input->leftLong() && input->rightLong())
+    {
+        render->renderAnimatedText(custom_text, text_length, true);
+    }
+
+    if (render->isAnimationDone())
+    {
+        refresh_render_cooldown = false;
+    }
+
+    if (refresh_render_cooldown)
+        return;
+
+    refresh_render_cooldown = true;
+    Glyph g = _readASCII(current_browse_chars_ascii);
+    render->renderGlyph(g);
 }
 
 void ActionHandler::resetStates()
 {
+    text_length = 0;
+
     refresh_render_cooldown = false;
     current_browse_chars_ascii = 1;
+}
+
+void ActionHandler::AddNewElementTxtAniamtion(char e)
+{
+    text_length++;
+    char *t = new char[text_length];
+
+    if (custom_text != nullptr)
+    {
+        for (short int i = 0; i < text_length; i++)
+        {
+            t[i] = custom_text[i];
+        }
+
+        delete[] custom_text;
+    }
+
+    t[text_length-1] = e;
+
+     custom_text = t;
 }
