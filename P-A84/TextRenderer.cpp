@@ -3,7 +3,7 @@
 TextRenderer::TextRenderer(/* args */)
 {
     render_animation = false;
-    brightness = 500;
+    brightness = 100;
 }
 
 TextRenderer::~TextRenderer()
