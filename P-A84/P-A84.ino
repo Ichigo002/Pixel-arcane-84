@@ -8,22 +8,6 @@ InputHandler input;
 
 ActionHandler action_handler(&renderer, &input);
 
-void setupPins()
-{
-    pinMode(rowDataPin, OUTPUT);
-    pinMode(rowClockPin, OUTPUT);
-    pinMode(rowLatchPin, OUTPUT);
-
-    pinMode(colDataPin, OUTPUT);
-    pinMode(colClockPin, OUTPUT);
-    pinMode(colLatchPin, OUTPUT);
-
-    pinMode(btnLeftPin, INPUT);
-    pinMode(btnUpPin, INPUT);
-    pinMode(btnDownPin, INPUT);
-    pinMode(btnRightPin, INPUT);
-}
-
 char option = 0;
 bool option_is_chosen = false;
 bool btn_pressed = true;
@@ -33,7 +17,7 @@ void updateMenu()
     if (option_is_chosen)
         return;
 
-    if (input.isButtonPressed(BTN_LEFT))
+    if (input.left())
     {
         option--;
         btn_pressed = true;
@@ -41,7 +25,7 @@ void updateMenu()
             option = 4;
     }
 
-    if (input.isButtonPressed(BTN_RIGHT))
+    if (input.right())
     {
         option++;
         btn_pressed = true;
@@ -49,7 +33,7 @@ void updateMenu()
             option = 0;
     }
 
-    if (input.isButtonPressed(BTN_UP))
+    if (input.up())
     {
         btn_pressed = true;
         option_is_chosen = true;
@@ -64,19 +48,19 @@ void updateMenu()
     switch (option)
     {
     case 0:
-        renderer.renderAnimatedText("P1BROWSE CHARS", 14, true);
+        renderer.renderAnimatedText("1BROWSE CHARS", 13, true, 100);
         break;
     case 1:
-        renderer.renderAnimatedText("P2EXAMPLE ANIMATION", 19, true);
+        renderer.renderAnimatedText("2EXAMPLE ANIMATION", 18, true);
         break;
     case 2:
-        renderer.renderAnimatedText("P3CUSTOM ANIMATION", 18, true);
+        renderer.renderAnimatedText("3CUSTOM ANIMATION", 17, true);
         break;
     case 3:
-        renderer.renderAnimatedText("P4TETRIS", 8, true);
+        renderer.renderAnimatedText("4TETRIS", 7, true);
         break;
     case 4:
-        renderer.renderAnimatedText("P4SNAKE", 7, true);
+        renderer.renderAnimatedText("5SNAKE", 6, true);
         break;
     default:
         renderer.renderAnimatedText("ERROR MENU", 10, true);
@@ -86,11 +70,14 @@ void updateMenu()
 
 void setup()
 {
-    setupPins();
+    renderer.begin();
+    input.begin();
 }
 
 void loop()
 {
+    input.update();
+
     updateMenu();
 
     if (option_is_chosen)
@@ -114,7 +101,7 @@ void loop()
             break;
         }
 
-        if (input.isButtonPressedFor2Sec(BTN_DOWN)) // EXIT
+        if (input.downLong()) // EXIT
         {
             action_handler.resetStates();
             option_is_chosen = false;
