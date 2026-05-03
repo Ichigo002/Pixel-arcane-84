@@ -10,8 +10,8 @@ extern const short int colClockPin;
 extern const short int colLatchPin;
 
 extern const short int btnLeftPin;
-extern const short int btnOkPin;
-extern const short int btnCancelPin;
+extern const short int btnUpPin;
+extern const short int btnDownPin;
 extern const short int btnRightPin;
 
 #endif
