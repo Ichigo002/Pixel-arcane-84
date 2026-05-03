@@ -3,6 +3,7 @@
 TextRenderer::TextRenderer(/* args */)
 {
     render_animation = false;
+    brightness = 1000;
 }
 
 TextRenderer::~TextRenderer()
@@ -21,7 +22,7 @@ void TextRenderer::renderASCII(char character)
     render_animation = false;
 }
 
-void TextRenderer::renderAnimatedText(char *text, int text_length, int animation_speed_ms, bool loop_animation)
+void TextRenderer::renderAnimatedText(char *text, int text_length, bool loop_animation, int animation_speed_ms)
 {
     this->animation_speed_ms = animation_speed_ms;
     this->loop_animation = loop_animation;
@@ -45,7 +46,14 @@ void TextRenderer::renderAnimatedText(char *text, int text_length, int animation
 
 void TextRenderer::changeAnimationSpeed(int animation_speed_ms)
 {
+    if(animation_speed_ms < 0)
+        return;
     this->animation_speed_ms = animation_speed_ms;
+}
+
+int TextRenderer::getAnimationSpeed()
+{
+    return animation_speed_ms;
 }
 
 void TextRenderer::breakLoopAnimation()
@@ -56,6 +64,20 @@ void TextRenderer::breakLoopAnimation()
 bool TextRenderer::isAnimationDone()
 {
     return !render_animation;
+}
+
+void TextRenderer::increaseBrightness()
+{
+    brightness += BRIGHTNBESS_DROP_VAL;
+    if(brightness > 1500)
+        brightness = 1500;
+}
+
+void TextRenderer::decreaseBrightness()
+{
+    brightness -= BRIGHTNBESS_DROP_VAL;
+    if(brightness - BRIGHTNBESS_DROP_VAL < 0)
+        brightness = 1; 
 }
 
 void TextRenderer::update()
@@ -101,7 +123,16 @@ void TextRenderer::update()
         shiftOut(colDataPin, colClockPin, MSBFIRST, glyph_to_render.raw_ascii[i]);
         digitalWrite(rowLatchPin, HIGH);
         digitalWrite(colLatchPin, HIGH);
-        delay(1);
+        delayMicroseconds(brightness);
+
+        digitalWrite(rowLatchPin, LOW);
+        digitalWrite(colLatchPin, LOW);
+        shiftOut(rowDataPin, rowClockPin, LSBFIRST, 0);
+        shiftOut(colDataPin, colClockPin, MSBFIRST, 0); // 1 , 1500
+        digitalWrite(rowLatchPin, HIGH);
+        digitalWrite(colLatchPin, HIGH);
+
+        delayMicroseconds(1500 - brightness);
     }
 }
 

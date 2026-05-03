@@ -6,6 +6,8 @@
 #include <Arduino.h>
 #include <TimerKernel.h>
 
+#define BRIGHTNBESS_DROP_VAL 220
+
 class TextRenderer
 {
 public:
@@ -20,13 +22,19 @@ public:
     /// @param character give specified character to render
     void renderASCII(char character);
 
-    void renderAnimatedText(char *text, int text_length, int animation_speed_ms = 180, bool loop_animation = false);
+    void renderAnimatedText(char *text, int text_length, bool loop_animation = false, int animation_speed_ms = 100);
 
     void changeAnimationSpeed(int animation_speed_ms);
+
+    int getAnimationSpeed();
 
     void breakLoopAnimation();
 
     bool isAnimationDone();
+
+    void increaseBrightness();
+    
+    void decreaseBrightness();
 
     void update();
 
@@ -34,6 +42,8 @@ private:
     Glyph glyph_to_render;
 
     bool render_animation;
+
+    short int brightness; // value between 1 - 1500;
 
     // Animation vars
     char *animated_text;
