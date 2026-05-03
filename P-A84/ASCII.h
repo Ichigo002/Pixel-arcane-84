@@ -20,6 +20,8 @@ public:
 
 int getAsciiTablePosition(char &c);
 
+const short int ascii_size_table = 46;
+
 const uint8_t ascii_table[46][8] PROGMEM = {
 
     // ERROR 0
@@ -522,8 +524,8 @@ const uint8_t ascii_table[46][8] PROGMEM = {
         0b00000000,
         0b00000000,
         0b00000000,
-        0b01111000,
-        0b01111000,
+        0b00111100,
+        0b00111100,
         0b00000000,
         0b00000000,
         0b00000000},
