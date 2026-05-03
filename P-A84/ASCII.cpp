@@ -1,8 +1,38 @@
 #include "ASCII.h"
 
+const char asciiLUT[46] = {
+    0,    // 0 (unused)
+
+    // A-Z -> 1–26
+    'A','B','C','D','E','F','G','H','I','J',
+    'K','L','M','N','O','P','Q','R','S','T',
+    'U','V','W','X','Y','Z',
+
+    // 27–36 -> 0–9
+    '0','1','2','3','4','5','6','7','8','9',
+
+    // 37–45 -> special chars
+    ' ', // 37
+    '!', // 38
+    '?', // 39
+    ')', // 40
+    '(', // 41
+    '#', // 42
+    ',', // 43
+    '.', // 44
+    '-'  // 45
+};
+
+char getCharFromMyAsciiTable(int i)
+{
+    if (i >= 0 && i < 46)
+        return asciiLUT[i];
+
+    return '?';
+}
+
 int getAsciiTablePosition(char &c)
 {
-
     if (c >= 48 && c <= 57)
         return c - 21;
 

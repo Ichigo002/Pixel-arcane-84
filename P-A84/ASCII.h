@@ -18,6 +18,8 @@ public:
 // 7 specials [SPACE] ! ? :) :( # , . -
 // total: 46
 
+char getCharFromMyAsciiTable(int i);
+
 int getAsciiTablePosition(char &c);
 
 const short int ascii_size_table = 46;
