@@ -83,10 +83,18 @@ void ActionHandler::runCustomAnimation()
         if (current_browse_chars_ascii >= ascii_size_table)
             current_browse_chars_ascii = 1;
     }
+    if (input->down())
+        render->changeAnimationSpeed(render->getAnimationSpeed() + 15);
+
+    if (input->up())
+    {
+        render->changeAnimationSpeed(render->getAnimationSpeed() - 15);
+    }
+
 
     if (input->upLong())
     {
-        render->renderAnimatedText("ADD", 3, false, 40);
+        render->renderAnimatedText("+", 1, false, 45);
         char x = getCharFromMyAsciiTable(current_browse_chars_ascii);
         AddNewElementTxtAniamtion(x);
     }
