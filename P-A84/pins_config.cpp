@@ -9,6 +9,6 @@ const short int colClockPin = 3;
 const short int colLatchPin = 2;
 
 const short int btnLeftPin = 7;
-const short int btnUpPin = 10;
+const short int btnUpPin = 8;
 const short int btnDownPin = 9;
-const short int btnRightPin = 8;
+const short int btnRightPin = 10;
