@@ -16,22 +16,25 @@ SnakeGame::~SnakeGame()
 
 void SnakeGame::update()
 {
-    if (input->down())
+    if(isGameOver)
+        return;
+
+    if (input->down() && move_y != 1)
     {
         move_x = 0;
         move_y = -1;
     }
-    if (input->up())
+    if (input->up() && move_y != -1)
     {
         move_x = 0;
         move_y = 1;
     }
-    if (input->left())
+    if (input->left() && move_x != 1)
     {
         move_x = -1;
         move_y = 0;
     }
-    if (input->right())
+    if (input->right() && move_x != -1)
     {
         move_x = 1;
         move_y = 0;
@@ -53,14 +56,14 @@ void SnakeGame::update()
         getRandomApple();
         record++;
     }
-
-    renderSnakeAndApple();
+    if(!isGameOver)
+        renderSnakeAndApple();
 }
 
 void SnakeGame::resetState()
 {
-    refresh_snake_time_ms = 400;
-
+    refresh_snake_time_ms = 260;
+    
     move_x = 0;
     move_y = 1;
 
@@ -76,8 +79,26 @@ void SnakeGame::resetState()
     snake_head = 1;
 
     record = 0;
+    isGameOver = false;
 
     getRandomApple();
+}
+
+bool SnakeGame::IsGameFinished()
+{
+    return isGameOver && render->isAnimationDone();
+}
+
+void SnakeGame::gameOver()
+{
+    sprintf(gameOverTxt, "GAME OVER ( SCORE %d", record);
+
+    if(record < 10)
+        gameOverTxt[19] = ' ';
+
+    render->renderAnimatedText(gameOverTxt, 20);
+    
+    isGameOver = true;
 }
 
 void SnakeGame::getRandomApple()
@@ -129,20 +150,19 @@ void SnakeGame::moveSnakeChainBy(char x, char y)
     char hx, hy;
     translateSnakeChainToXY(hx, hy, snake_chain[snake_head]);
     hx -= x;
-    if (hx > 8)
-        hx = 1;
-    if (hx < 1)
-        hx = 8;
-
     hy -= y;
-    if (hy > 8)
-        hy = 1;
-    if (hy < 1)
-        hy = 8;
+
+    if (hx > 8 || hx < 1 || hy > 8 || hy < 1)
+        gameOver();
 
     snake_head++;
     if(snake_head >= 64)
         snake_head = 0;
+
+    char x2, y2;
+    translateSnakeChainToXY(x2, y2, snake_chain[snake_head]); // DOESNT WORK FIX IT!
+    if(x2 != 0 && y2 != 0)
+        gameOver();
 
     snake_chain[snake_head] = translateXYToSnakeChain(hx, hy);
 }

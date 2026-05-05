@@ -35,7 +35,11 @@ public:
     void update();
 
     void resetState();
+
+    bool IsGameFinished();
 private:
+
+    void gameOver();
 
     void getRandomApple();
 
@@ -57,6 +61,8 @@ private:
     short int refresh_snake_time_ms;
 
     char move_x, move_y;
+    bool isGameOver;
+    char gameOverTxt[20];
 
     char snake_tail;
     char snake_head;
