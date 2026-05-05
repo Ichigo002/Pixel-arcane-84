@@ -142,5 +142,5 @@ void ActionHandler::AddNewElementTxtAniamtion(char e)
 
     t[text_length-1] = e;
 
-     custom_text = t;
+    custom_text = t;
 }
