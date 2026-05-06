@@ -46,10 +46,6 @@ void TetrisGame::update()
         //renderSnakeAndApple();
 }
 
-// 514bytes flahs
-// 66 bytes memory
-// 7480, 425
-
 void TetrisGame::resetState()
 {
     refresh_tetris_fall_time_ms = 500;

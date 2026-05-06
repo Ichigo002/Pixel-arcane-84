@@ -16,7 +16,7 @@ SnakeGame::~SnakeGame()
 
 void SnakeGame::update()
 {
-    if(isGameOver)
+    if (isGameOver)
         return;
 
     if (input->down() && move_y != 1)
@@ -56,14 +56,14 @@ void SnakeGame::update()
         getRandomApple();
         record++;
     }
-    if(!isGameOver)
+    if (!isGameOver)
         renderSnakeAndApple();
 }
 
 void SnakeGame::resetState()
 {
     refresh_snake_time_ms = 260;
-    
+
     move_x = 0;
     move_y = 1;
 
@@ -73,6 +73,11 @@ void SnakeGame::resetState()
     for (char i = 2; i < 64; i++)
     {
         snake_chain[i] = 0;
+    }
+
+    for (char i = 0; i < 8; i++)
+    {
+        g.raw_ascii[i] = 0;
     }
 
     snake_tail = 0;
@@ -89,15 +94,16 @@ bool SnakeGame::IsGameFinished()
     return isGameOver && render->isAnimationDone();
 }
 
+
 void SnakeGame::gameOver()
 {
-    sprintf(gameOverTxt, "GAME OVER ( %d", record);
+    sprintf(gameOverTxt, "GAME OVER ( %d(", record);
 
-    if(record < 10)
+    if (record < 10)
         gameOverTxt[13] = ' ';
 
     render->renderAnimatedText(gameOverTxt, 14);
-    
+
     isGameOver = true;
 }
 
@@ -109,7 +115,7 @@ void SnakeGame::getRandomApple()
 
 void SnakeGame::renderSnakeAndApple()
 {
-    
+
     for (uint8_t i = 0; i < 8; i++)
     {
         g.raw_ascii[i] = 0;
@@ -134,7 +140,7 @@ void SnakeGame::renderSnakeAndApple()
 void SnakeGame::snakeGettingFat(char x, char y)
 {
     snake_head++;
-    if(snake_head >= 64)
+    if (snake_head >= 64)
         snake_head = 0;
 
     snake_chain[snake_head] = translateXYToSnakeChain(x, y);
@@ -144,7 +150,7 @@ void SnakeGame::moveSnakeChainBy(char x, char y)
 {
     snake_chain[snake_tail] = 0;
     snake_tail++;
-    if(snake_tail >= 64)
+    if (snake_tail >= 64)
         snake_tail = 0;
 
     char hx, hy;
@@ -156,14 +162,13 @@ void SnakeGame::moveSnakeChainBy(char x, char y)
         gameOver();
 
     snake_head++;
-    if(snake_head >= 64)
+    if (snake_head >= 64)
         snake_head = 0;
 
-    if((g.raw_ascii[hy-1] >> (hx-1)) & 1 == 1 && hx != apple_x && hy != apple_y)
+    if ((g.raw_ascii[hy - 1] >> (hx - 1)) & 1 == 1 && hx != apple_x && hy != apple_y)
         gameOver();
 
     snake_chain[snake_head] = translateXYToSnakeChain(hx, hy);
-
 }
 
 uint8_t SnakeGame::translateXYToSnakeChain(char x, char y)

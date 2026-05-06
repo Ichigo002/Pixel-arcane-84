@@ -71,7 +71,7 @@ private:
     char snake_chain[64];
 
     char apple_x, apple_y;
-    int record;
+    short int record;
 };
 
 
