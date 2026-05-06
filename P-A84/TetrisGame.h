@@ -1,39 +1,36 @@
 #ifndef TETRIS_GAME_H
 #define TETRIS_GAME_H
 
+#include <Arduino.h>
 #include "TextRenderer.h"
 #include "InputHandler.h"
 
-//CHALLANGE: make tetris with only:
-// 514 bytes free flash
-// 66  bytes free memory
-// Challange accepted!
-
-class TetrisGame
-{
-
+class TetrisGame {
 public:
-    TetrisGame(TextRenderer *render, InputHandler *input);
-    ~TetrisGame();
-
+    TetrisGame(TextRenderer* render, InputHandler* input);
     void update();
-
     void resetState();
-
     bool IsGameFinished();
 
 private:
-    void gameOver();
+    void spawnPiece();
+    void draw();
+    bool checkCollision(int8_t nx, int8_t ny, uint16_t mask);
+    void lockPiece();
+    void clearLines();
+    void updatePieceMask();
 
-    Glyph g;
-    uint32_t refresh_timestamp;
-    short int refresh_tetris_fall_time_ms;
+    TextRenderer* render;
+    InputHandler* input;
 
-    TextRenderer *render;
-    InputHandler *input;
-
+    uint8_t board[8];      // Plansza 8x8
+    uint16_t current_piece; // Maska bitowa 4x4 aktualnego klocka
+    int8_t px, py;         // Pozycja klocka
+    uint8_t piece_id;      // Typ klocka
+    uint8_t rotation;      // Stan obrotu (0-3)
+    
+    uint32_t last_fall;
     bool isGameOver;
-    int score;
 };
 
 #endif

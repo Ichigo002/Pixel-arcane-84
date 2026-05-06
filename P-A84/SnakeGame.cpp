@@ -19,7 +19,7 @@ uint8_t SnakeGame::getDir(uint8_t index) {
 
 void SnakeGame::resetState() {
     refresh_snake_time_ms = 260;
-    move_x = 0; move_y = 1;
+    move_x = 0; move_y = -1;
     isGameOver = false;
     record = 0;
 
@@ -92,26 +92,32 @@ void SnakeGame::renderSnakeAndApple() {
     Glyph g; 
     for (uint8_t i = 0; i < 8; i++) g.raw_ascii[i] = 0;
 
-    // Renderowanie węża (od ogona do głowy)
     uint8_t tx = tail_x, ty = tail_y;
     uint8_t curr = snake_tail_idx;
     
     while (curr != snake_head_idx) {
-        if (tx >=1 && tx <=8 && ty >=1 && ty <=8)
+        // Rysujemy segment
+        if (tx >= 1 && tx <= 8 && ty >= 1 && ty <= 8) {
             g.raw_ascii[ty - 1] |= (1 << (tx - 1));
+        }
         
+        // --- TUTAJ DODAJEMY SPRAWDZANIE KOLIZJI ---
+        // Jeśli aktualnie rysowany segment (tx, ty) ma te same 
+        // współrzędne co nowa głowa (head_x, head_y) -> Kolizja!
+        if (tx == head_x && ty == head_y) {
+            gameOver();
+            return; // Przerywamy rysowanie, bo gra się skończyła
+        }
+        // ------------------------------------------
+
         uint8_t d = getDir(curr);
         if (d == 0) ty++; else if (d == 1) ty--;
         else if (d == 2) tx--; else if (d == 3) tx++;
         curr = (curr + 1) % 64;
     }
-    // Głowa
+    
+    // Na końcu rysujemy głowę i jabłko
     g.raw_ascii[head_y - 1] |= (1 << (head_x - 1));
-
-    // Kolizja z samym sobą (głowa uderza w ciało)
-    if (g.raw_ascii[head_y-1] & (1 << (head_x-1)) && /* uproszczona logika */ false) {} 
-
-    // Jabłko
     g.raw_ascii[apple_y - 1] |= (1 << (apple_x - 1));
 
     render->renderGlyph(g);
@@ -119,8 +125,18 @@ void SnakeGame::renderSnakeAndApple() {
 
 void SnakeGame::gameOver() {
     isGameOver = true;
-    // Używamy F() aby nie zajmować RAMu napisem
-    render->renderAnimatedText("GAME OVER", 9);
+    
+    char buffer[17]; 
+    
+    // Kopiujemy "GAME OVER (" z Flash do RAMu na chwilę
+    strcpy_P(buffer, (PGM_P)F("GAME OVER ( ")); 
+    
+    // Dopisujemy liczbę na końcu
+    char numBuf[4];
+    itoa(record, numBuf, 10);
+    strcat(buffer, numBuf);
+    
+    render->renderAnimatedText(buffer, strlen(buffer));
 }
 
 void SnakeGame::getRandomApple() {
