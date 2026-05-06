@@ -91,12 +91,12 @@ bool SnakeGame::IsGameFinished()
 
 void SnakeGame::gameOver()
 {
-    sprintf(gameOverTxt, "GAME OVER ( SCORE %d", record);
+    sprintf(gameOverTxt, "GAME OVER ( %d", record);
 
     if(record < 10)
-        gameOverTxt[19] = ' ';
+        gameOverTxt[13] = ' ';
 
-    render->renderAnimatedText(gameOverTxt, 20);
+    render->renderAnimatedText(gameOverTxt, 14);
     
     isGameOver = true;
 }

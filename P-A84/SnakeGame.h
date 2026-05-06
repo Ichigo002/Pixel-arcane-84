@@ -63,7 +63,7 @@ private:
 
     char move_x, move_y;
     bool isGameOver;
-    char gameOverTxt[20];
+    char gameOverTxt[14];
 
     char snake_tail;
     char snake_head;
