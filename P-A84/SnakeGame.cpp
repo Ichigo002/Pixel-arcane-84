@@ -125,18 +125,8 @@ void SnakeGame::renderSnakeAndApple() {
 
 void SnakeGame::gameOver() {
     isGameOver = true;
-    
-    char buffer[17]; 
-    
-    // Kopiujemy "GAME OVER (" z Flash do RAMu na chwilę
-    strcpy_P(buffer, (PGM_P)F("GAME OVER ( ")); 
-    
-    // Dopisujemy liczbę na końcu
-    char numBuf[4];
-    itoa(record, numBuf, 10);
-    strcat(buffer, numBuf);
-    
-    render->renderAnimatedText(buffer, strlen(buffer));
+
+    render->renderAnimatedText("GAME OVER", 9);
 }
 
 void SnakeGame::getRandomApple() {

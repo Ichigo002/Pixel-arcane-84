@@ -127,20 +127,8 @@ void ActionHandler::resetStates()
 
 void ActionHandler::AddNewElementTxtAniamtion(char e)
 {
+    custom_text[text_length] = e;
     text_length++;
-    char *t = new char[text_length];
-
-    if (custom_text != nullptr)
-    {
-        for (short int i = 0; i < text_length; i++)
-        {
-            t[i] = custom_text[i];
-        }
-
-        delete[] custom_text;
-    }
-
-    t[text_length-1] = e;
-
-    custom_text = t;
+    if(text_length >= 30)
+        text_length = 0;
 }

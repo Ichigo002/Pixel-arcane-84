@@ -24,7 +24,7 @@ private:
     InputHandler *input;
 
     short int text_length;
-    char* custom_text;
+    char custom_text[30];
 
     bool refresh_render_cooldown;
     short int current_browse_chars_ascii;
