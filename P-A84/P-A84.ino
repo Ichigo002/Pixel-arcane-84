@@ -2,10 +2,15 @@
 #include "TextRenderer.h"
 #include "InputHandler.h"
 #include "ActionHandler.h"
+#include "SnakeGame.h"
+#include "TetrisGame.h"
 
 TextRenderer renderer;
 InputHandler input;
 
+
+TetrisGame tetris(&renderer, &input);
+SnakeGame snake(&renderer, &input);
 ActionHandler action_handler(&renderer, &input);
 
 char option = 0;
@@ -47,23 +52,22 @@ void updateMenu()
 
     switch (option)
     {
-    case 0:
-        renderer.renderAnimatedText("1BROWSE CHARS", 13, true, 100);
-        break;
-    case 1:
-        renderer.renderAnimatedText("2EXAMPLE ANIMATION", 18, true);
-        break;
     case 2:
-        renderer.renderAnimatedText("3CUSTOM ANIMATION", 17, true);
+        renderer.renderAnimatedText("3BROWSE CHARS", 13, true, 100);
         break;
     case 3:
-        renderer.renderAnimatedText("4TETRIS", 7, true);
+        renderer.renderAnimatedText("4EXAMPLE ANIM", 13, true);
         break;
     case 4:
-        renderer.renderAnimatedText("5SNAKE", 6, true);
+        renderer.renderAnimatedText("5CUSTOM ANIM", 12, true);
+        break;
+    case 0:
+        renderer.renderAnimatedText("1TETRIS", 7, true);
+        break;
+    case 1:
+        renderer.renderAnimatedText("2SNAKE", 6, true);
         break;
     default:
-        renderer.renderAnimatedText("ERROR MENU", 10, true);
         break;
     }
 }
@@ -72,10 +76,13 @@ void setup()
 {
     renderer.begin();
     input.begin();
+    //renderer.renderAnimatedText("LORENZ - KLIMATYZACJA I OGRZEWANIE", 34, true);
 }
 
 void loop()
 {
+    //renderer.update();
+    //return;
     input.update();
 
     updateMenu();
@@ -84,26 +91,29 @@ void loop()
     {
         switch (option)
         {
-        case 0: // browse chars
+        case 2: // browse chars
             action_handler.runBrowseChars();
             break;
-        case 1: // example animation
+        case 3: // example animation
             action_handler.runExampleAnimation();
             break;
-        case 2: // custom animations
+        case 4: // custom animations
             action_handler.runCustomAnimation();
             break;
-        case 3: // tetris
-
+        case 0: // tetris
+            tetris.update();
             break;
-        case 4: // snake
-
+        case 1: // snake
+            snake.update();
             break;
         }
 
-        if (input.downLong()) // EXIT
+        if (input.downLong() || snake.IsGameFinished() || tetris.IsGameFinished()) // EXIT
         {
             action_handler.resetStates();
+            snake.resetState();
+            tetris.resetState();
+            
             option_is_chosen = false;
         }
     }
