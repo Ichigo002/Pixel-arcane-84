@@ -57,6 +57,7 @@ private:
     TextRenderer* render;
     InputHandler *input;
 
+    Glyph g;
     uint32_t refresh_timestamp;
     short int refresh_snake_time_ms;
 

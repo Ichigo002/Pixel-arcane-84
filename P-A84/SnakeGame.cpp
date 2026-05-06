@@ -109,7 +109,7 @@ void SnakeGame::getRandomApple()
 
 void SnakeGame::renderSnakeAndApple()
 {
-    Glyph g;
+    
     for (uint8_t i = 0; i < 8; i++)
     {
         g.raw_ascii[i] = 0;
@@ -159,12 +159,11 @@ void SnakeGame::moveSnakeChainBy(char x, char y)
     if(snake_head >= 64)
         snake_head = 0;
 
-    char x2, y2;
-    translateSnakeChainToXY(x2, y2, snake_chain[snake_head]); // DOESNT WORK FIX IT!
-    if(x2 != 0 && y2 != 0)
+    if((g.raw_ascii[hy-1] >> (hx-1)) & 1 == 1 && hx != apple_x && hy != apple_y)
         gameOver();
 
     snake_chain[snake_head] = translateXYToSnakeChain(hx, hy);
+
 }
 
 uint8_t SnakeGame::translateXYToSnakeChain(char x, char y)
