@@ -1,78 +1,45 @@
 #ifndef SNAKE_GAME_H
 #define SNAKE_GAME_H
 
+#include <Arduino.h>
 #include "TextRenderer.h"
 #include "InputHandler.h"
 
-/*
-
-BOARD (start position)
-Y
-8
-7
-6
-5       S
-4       S
-3       
-2
-1
-  1 2 3 4 5 6 7 8 X
-
-uint8_t frame position of snake_chain
-
-Pos:X     Y
-0b 0000 0000
-
-*/
-
-class SnakeGame
-{
-
+class SnakeGame {
 public:
     SnakeGame(TextRenderer* render, InputHandler* input);
-    ~SnakeGame();
-
     void update();
-
     void resetState();
-
     bool IsGameFinished();
+
 private:
-
     void gameOver();
-
     void getRandomApple();
-
     void renderSnakeAndApple();
-
-    void snakeGettingFat(char x, char y);
-
-    // y: 1 = move up, 0 = no move, -1 = move down
-    // x: 1 = move right, 0 = no move, -1 = move left
-    void moveSnakeChainBy(char x = 0, char y = 0);
     
-    uint8_t translateXYToSnakeChain(char x, char y);
-    void translateSnakeChainToXY(char& x, char& y, uint8_t v);
+    // Pakowanie bitowe: 64 segmenty * 2 bity = 128 bitów = 16 bajtów
+    // 00=Góra, 01=Dół, 10=Lewo, 11=Prawo
+    uint8_t snake_chain[16]; 
+    
+    void setDir(uint8_t index, uint8_t dir);
+    uint8_t getDir(uint8_t index);
 
     TextRenderer* render;
     InputHandler *input;
 
-    Glyph g;
     uint32_t refresh_timestamp;
-    short int refresh_snake_time_ms;
+    uint16_t refresh_snake_time_ms;
 
-    char move_x, move_y;
+    int8_t move_x, move_y;
     bool isGameOver;
-    char gameOverTxt[14];
 
-    char snake_tail;
-    char snake_head;
+    uint8_t snake_tail_idx; // Indeks w tablicy kołowej
+    uint8_t snake_head_idx;
+    uint8_t head_x, head_y;
+    uint8_t tail_x, tail_y;
 
-    char snake_chain[64];
-
-    char apple_x, apple_y;
-    short int record;
+    uint8_t apple_x, apple_y;
+    uint8_t record;
 };
-
 
 #endif
